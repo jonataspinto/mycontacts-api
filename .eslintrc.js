@@ -9,5 +9,6 @@ module.exports = {
     ecmaVersion: 11,
   },
   rules: {
+    'class-methods-use-this': false,
   },
 };
