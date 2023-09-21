@@ -4,35 +4,35 @@ let contacts = [
   {
     id: uuid(),
     name: 'Mateus',
-    email:'mateus@mail.com',
+    email: 'mateus@mail.com',
     phone: '12345678',
     category_id: uuid(),
   },
   {
     id: uuid(),
     name: 'Jose',
-    email:'jose@mail.com',
+    email: 'jose@mail.com',
     phone: '12345678',
     category_id: uuid(),
-  }
-]
+  },
+];
 
 class ContactsRepository {
-  findAll(){
+  findAll() {
     return new Promise((resolve) => {
-      resolve(contacts)
+      resolve(contacts);
     });
   }
 
-  findById(id){
+  findById(id) {
     return new Promise((resolve) => {
-      resolve(contacts.find(contact => contact.id === id))
+      resolve(contacts.find((contact) => contact.id === id));
     });
   }
 
-  delete(id){
+  delete(id) {
     return new Promise((resolve) => {
-      contacts = contacts.filter(contact => contact.id !== id)
+      contacts = contacts.filter((contact) => contact.id !== id);
       resolve();
     });
   }
