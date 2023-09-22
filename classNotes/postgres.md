@@ -1,0 +1,23 @@
+list databases
+
+```shel
+\l
+```
+
+---
+
+connect to database
+
+```shel
+\c {DATABASE_NAME}
+```
+
+---
+
+list all relations of database
+
+```shel
+\dt
+```
+
+---
