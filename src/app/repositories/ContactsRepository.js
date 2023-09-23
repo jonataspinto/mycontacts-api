@@ -1,84 +1,63 @@
-const { v4: uuid } = require('uuid');
-
-let contacts = [
-  {
-    id: uuid(),
-    name: 'Mateus',
-    email: 'mateus@mail.com',
-    phone: '12345678',
-    category_id: uuid(),
-  },
-  {
-    id: uuid(),
-    name: 'Jose',
-    email: 'jose@mail.com',
-    phone: '12345678',
-    category_id: uuid(),
-  },
-];
+const DATABASE = require('../../database');
 
 class ContactsRepository {
-  findAll() {
-    return new Promise((resolve) => {
-      resolve(contacts);
-    });
+  async findAll({ orderBy = 'ASC' }) {
+    const direction = orderBy.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+    const rows = DATABASE.query(`
+      SELECT * from contacts ORDER BY name ${direction}
+    `);
+
+    return rows;
   }
 
-  findById(id) {
-    return new Promise((resolve) => {
-      resolve(contacts.find((contact) => contact.id === id));
-    });
+  async findById(id) {
+    const [row] = await DATABASE.query(`
+      SELECT * FROM contacts WHERE id = $1
+    `, [id]);
+
+    return row;
   }
 
-  findByEmail(email) {
-    return new Promise((resolve) => {
-      resolve(contacts.find((contact) => contact.email === email));
-    });
+  async findByEmail(email) {
+    const [row] = await DATABASE.query(`
+    SELECT * FROM contacts WHERE email = $1
+  `, [email]);
+
+    return row;
   }
 
-  delete(id) {
-    return new Promise((resolve) => {
-      contacts = contacts.filter((contact) => contact.id !== id);
-      resolve();
-    });
-  }
-
-  create({
+  async create({
     name, email, phone, category_id,
   }) {
-    return new Promise((resolve) => {
-      const newContact = {
-        id: uuid(),
-        name,
-        email,
-        phone,
-        category_id,
-      };
+    const [row] = await DATABASE.query(`
+      INSERT INTO contacts(name, email, phone, category_id)
+      VALUES ($1,$2,$3,$4)
+      RETURNING *
+    `, [name, email, phone, category_id]);
 
-      contacts.push(newContact);
-
-      resolve(newContact);
-    });
+    return row;
   }
 
-  update(id, {
+  async update(id, {
     name, email, phone, category_id,
   }) {
-    return new Promise((resolve) => {
-      const updatedContact = {
-        id,
-        name,
-        email,
-        phone,
-        category_id,
-      };
+    const [row] = await DATABASE.query(`
+      UPDATE contacts
+      SET name = $1, email = $2, phone = $3, category_id = $4
+      WHERE id = $5
+      RETURNING *
+    `, [name, email, phone, category_id, id]);
 
-      contacts = contacts.map((contact) => (
-        contact.id === id ? updatedContact : contact
-      ));
+    return row;
+  }
 
-      resolve(updatedContact);
-    });
+  async delete(id) {
+    const deleteOperation = await DATABASE.query(`
+      DELETE from contacts
+      WHERE id = $1
+    `, [id]);
+
+    return deleteOperation;
   }
 }
 
