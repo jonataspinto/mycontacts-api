@@ -1,7 +1,9 @@
 const { Client } = require('pg');
 
+// when to run with docker use "db" (container name to postgres in docker-compose.yml) as host.
+// running "yarn dev" use "localhost" as host
 const client = new Client({
-  host: 'localhost',
+  host: 'pg',
   port: 5432,
   user: 'root',
   password: 'root',
