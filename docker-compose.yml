@@ -1,0 +1,27 @@
+version: "3"
+services:
+  server:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - pg
+    ports:
+      - 3001:3001
+    volumes:
+      - ./src:/app/src
+
+  pg:
+    image: postgres
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: mycontacts
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
