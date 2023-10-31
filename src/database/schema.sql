@@ -1,3 +1,5 @@
+-- if database exixts runs some `psql -d mycontacts` to conect with database
+
 CREATE DATABASE mycontacts;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
