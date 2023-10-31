@@ -1,3 +1,10 @@
+```shel
+  #see available commands
+  psql --help
+```
+
+---
+
 list databases
 
 ```shel
