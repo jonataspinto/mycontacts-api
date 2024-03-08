@@ -5,6 +5,15 @@
 
 ---
 
+create database
+
+```shel
+  #see available commands
+  createdb --help
+```
+
+---
+
 list databases
 
 ```shel
@@ -28,3 +37,5 @@ list all relations of database
 ```
 
 ---
+
+createdb -U root -p 5432 edevs
